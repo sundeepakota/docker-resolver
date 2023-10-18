@@ -1,0 +1,16 @@
+# Use an official minimal image as a parent image
+FROM alpine:latest
+
+# Update the package repository and install BIND DNS
+RUN apk update && apk add bind
+
+# Copy the BIND configuration files to the container
+COPY named.conf /etc/bind/named.conf
+COPY named.conf.local /etc/bind/named.conf.local
+COPY named.conf.options /etc/bind/named.conf.options
+
+# Expose DNS port
+EXPOSE 53/udp
+
+# Start BIND as the main command when the container runs
+CMD ["named", "-g"]
